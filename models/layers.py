@@ -43,12 +43,17 @@ class CastedLinear(nn.Module):
 
 
 class CastedEmbedding(nn.Module):
-    def __init__(self, num_embeddings: int, embedding_dim: int, init_std: float, cast_to: torch.dtype):
+    def __init__(self,
+                 num_embeddings: int,
+                 embedding_dim: int,
+                 init_std: float = 0.02,  # <- Thêm dòng này
+                 cast_to: torch.dtype = torch.float32):  # <- Cho mặc định để tránh lỗi
         super().__init__()
         self.cast_to = cast_to
         self.embedding_weight = nn.Parameter(
             trunc_normal_init_(torch.empty((num_embeddings, embedding_dim)), std=init_std)
         )
+
         
     def forward(self, input: torch.Tensor) -> torch.Tensor:
         return F.embedding(input, self.embedding_weight.to(self.cast_to))
