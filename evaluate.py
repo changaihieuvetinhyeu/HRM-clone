@@ -3,6 +3,10 @@ import yaml
 import os
 
 import torch
+import torch._dynamo
+torch._dynamo.config.suppress_errors = True
+torch._dynamo.disable()  # Tắt hoàn toàn Dynamo
+
 import torch.distributed as dist
 
 import pydantic
